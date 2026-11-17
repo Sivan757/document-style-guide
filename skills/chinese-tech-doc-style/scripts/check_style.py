@@ -28,7 +28,7 @@ FENCE = re.compile(r"^\s*(```|~~~)")
 RULES = {
     "fullwidth-digit": ("error", "数值使用半角数字（number.md）"),
     "cjk-ascii-space": ("warning", "中文与半角英文字符之间应有一个半角空格（text.md）"),
-    "cjk-digit-space": ("info", "中文与数字之间的空格需全文统一（text.md）"),
+    "cjk-digit-space": ("warning", "同一文档中中文与数字的空格风格不一致（text.md）"),
     "halfwidth-in-cjk": ("warning", "中文语句应使用全角标点（marks.md）"),
     "bracket-space": ("warning", "全角标点前后不留空格（text.md）"),
     "exclaim-repeat": ("error", "感叹号不得连用（marks.md）"),
@@ -115,6 +115,8 @@ def scan_file(path: Path) -> list[Finding]:
 
     fenced = False
     previous_level = 0
+    digit_findings: list[Finding] = []
+    spaced_digit = False
     for number, raw in enumerate(text.splitlines(), start=1):
         if FENCE.match(raw):
             fenced = not fenced
@@ -132,8 +134,18 @@ def scan_file(path: Path) -> list[Finding]:
                 findings.append(Finding(path, number, "heading-punct", raw.strip()))
 
         prose = strip_non_prose(raw)
+        if re.search(rf"[{CJK}] [0-9]", prose) or re.search(rf"[0-9] [{CJK}]", prose):
+            spaced_digit = True
         for rule, excerpt in check_line(prose):
-            findings.append(Finding(path, number, rule, excerpt + "：" + raw.strip()))
+            finding = Finding(path, number, rule, excerpt + "：" + raw.strip())
+            if rule == "cjk-digit-space":
+                digit_findings.append(finding)
+            else:
+                findings.append(finding)
+
+    # 中文与数字之间的空格可有可无，但同一文档必须统一，只有混杂时才报告。
+    if spaced_digit:
+        findings.extend(digit_findings)
 
     return findings
 
