@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "document-style-guide",
+  "owner": {
+    "name": "Sivan757",
+    "url": "https://github.com/Sivan757"
+  },
+  "description": "中文技术文档写作规范（阮一峰 document-style-guide），可作为技能加载。",
+  "plugins": [
+    {
+      "name": "document-style-guide",
+      "source": "./",
+      "description": "按《中文技术文档的写作规范》写、改、审中文技术文档，附带机械规则检查脚本。",
+      "license": "Unlicense",
+      "keywords": [
+        "chinese",
+        "technical-writing",
+        "documentation",
+        "style-guide"
+      ]
+    }
+  ]
+}
