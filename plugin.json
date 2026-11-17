@@ -1,0 +1,18 @@
+{
+  "name": "document-style-guide",
+  "version": "1.0.0",
+  "description": "中文技术文档写作规范（阮一峰 document-style-guide）的技能封装，供 DeepSeek Harness 加载。",
+  "author": {
+    "name": "阮一峰",
+    "url": "https://github.com/ruanyf/document-style-guide"
+  },
+  "homepage": "https://github.com/Sivan757/document-style-guide",
+  "repository": "https://github.com/Sivan757/document-style-guide",
+  "license": "Unlicense",
+  "keywords": [
+    "chinese",
+    "technical-writing",
+    "documentation",
+    "style-guide"
+  ]
+}
